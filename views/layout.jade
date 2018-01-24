@@ -4,8 +4,11 @@ html
     title= title
     link(rel='stylesheet', href='/css/style.css')
   body
-    block header
-      include common/header.jade
-    block content
-    block footer
-      include common/footer.jade
+    div.page-header
+      block header
+        include common/header.jade
+    div.page-body
+      block content
+    div.page-footer
+      block footer
+        include common/footer.jade

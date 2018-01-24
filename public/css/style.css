@@ -7,3 +7,33 @@ body {
 a{
   color: #000;
 }
+
+/*
+	layout部分
+*/
+
+.page-header,.page-body,.page-footer{
+	width: 100%;
+	max-width: 1024px;
+	margin: 0 auto;
+}
+
+/*
+	header部分
+*/
+.page-header{
+
+}
+
+/*
+  body部分
+*/
+.page-body{
+	
+}
+/*
+  footer部分
+*/
+.page-footer{
+	
+}
