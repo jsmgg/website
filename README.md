@@ -1,6 +1,7 @@
 1、npm install安装所有依赖
 
 
+fis3-postpackager-express-jade
 
 
 
