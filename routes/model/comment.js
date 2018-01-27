@@ -38,7 +38,7 @@ module.exports = {
             reject(err);
           } else {
             resolve(rows);
-            console.log( rows[0] );
+            //console.log( rows[0] );
           }
         });
 

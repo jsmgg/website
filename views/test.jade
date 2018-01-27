@@ -1,0 +1,17 @@
+extends layout
+block head
+  link(rel='stylesheet', href='/css/test.css')
+block content
+  div.testPage 测试页面
+  -if(loginView)
+    div.loginBox
+      -if(errorMsg)
+        p.errorMsg=errorMsg
+      form(action="/test",method="post",onsubmit="return true;")
+        input(name="userName" type="text" maxlength="30")
+        input(name="passWord" type="password" maxlength="32")
+        input(name="submitBtn" type="button" value="登录" js_handle="js_submit")
+  -else
+    div.articleList 文章列表
+  script(src='/js/test.js',type='text/javascript')
+
