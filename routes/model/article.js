@@ -19,13 +19,13 @@ module.exports = {
     return new Promise( ( resolve , reject )=>{
       db.getConnection().then( connection => {
         //console.log( connection );
-        connection.query('select * from article where userName='+connection.escape('明哥哥'), (err, rows)=>{
+        connection.query('select * from article where id='+connection.escape('2'), (err, rows)=>{
           if( err ){
-            console.log( error );
-            reject('error');
+            console.log( err );
+            reject(err);
           } else {
-            resolve('success'+rows[0].userName);
-            console.log( rows[0] );
+            resolve('success'+rows[0].content);
+            //console.log( rows[0] );
           }
         });
 

@@ -1,14 +1,13 @@
 //fis.require('jello')(fis);
 fis.set('namespace', 'website');
 
-var RECEIVER = 'http://127.0.0.1:8999/receiver'; // 接收端 url
-var PATH = '/Users/liuyao/Documents/code/website/dist';
+var PATH = '/Users/liuyao/Documents/code/dist';// 打包默认目录
 
-// 标记 staitc/libs 下面的 js 为模块化代码。
-/*fis.match('/static/js/wind/**.js', {
-    isMod: true
-});
-*/
+fis.match('*', {
+  deploy: fis.plugin('local-deliver', {
+    to: PATH
+  })
+})
 
 // 设置 *.scss 配置配置项
 fis.match('*.css', {
