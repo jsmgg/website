@@ -1,0 +1,1 @@
+"use strict";!function(){var t=new jSmart("<div>\n	{%if $test%}\n	test\n	{%else%}\n	notest\n	{%/if%}\n</div>"),n={init:function(){console.log(t.fetch({test:1}))}};n.init()}();

@@ -47,7 +47,7 @@ fis.match('/public/**.js', {
 
 
 //发布产品库
-fis.match('/public/**.js', {
+fis.media('online').match('/public/**.js', {
         optimizer: fis.plugin('uglify-js')
     })
     .match('/public/**.css', {
