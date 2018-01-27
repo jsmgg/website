@@ -1,0 +1,10 @@
+body{
+	
+}
+div{
+	width: 100%;
+	p{
+		width: 100px;
+		height: 200px;
+	}
+}

@@ -1,8 +1,14 @@
 doctype html
 html
   head
-    title= title
+    meta(charset="UTF-8")
+    title=title
+    meta(name="description",content="")
+    meta(name="keywords",content="")
+    link(rel="shortcut icon",href="/favicon.ico")
     link(rel='stylesheet', href='/css/style.css')
+    script(src='/js/libs/jquery.min.js',type='text/javascript')
+    block head
   body
     div.page-header
       block header
