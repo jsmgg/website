@@ -4,6 +4,16 @@ html
     meta(charset="UTF-8")
     -if(isWap)
       meta(name="viewport",content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no")
+      script(type="text/javascript")
+        | function _resize(){
+        |   var remBase = (document.documentElement.offsetWidth/375*50);
+        |   document.documentElement.style.fontSize = remBase+'px' ;
+        |   setTimeout(function(){
+        |     document.documentElement.style.fontSize = remBase+'px' ;
+        |  },300);
+        | }
+        | _resize();
+        | window.addEventListener('resize',_resize,false)
     title=title
     meta(name="description",content="")
     meta(name="keywords",content="")
