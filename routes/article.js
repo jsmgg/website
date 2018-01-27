@@ -18,7 +18,8 @@ router.get('/', function(req, res, next) {
   		    msg+='<br/>'+item.id;
   			})
 		    res.render('article',{
-		      msg :msg
+		      msg :msg,
+          useragent:res.useragent
 		    });
   		}).catch(err=>{
         next(err);
