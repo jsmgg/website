@@ -23,14 +23,12 @@ module.exports = {
       db.getConnection().then( connection => {
         var sql = 'select * from comment where status=1';
         size = size || pageSize; 
+        page = page || 1;
         if( key ) {
           sql += ' and ' + key+'='+connection.escape(value);
         }
         sql += ' order by id desc';
-
-        if( page ){
-          sql += ' limit '+ (page-1) * size + ',' + size;
-        }
+        sql += ' limit '+ (page-1) * size + ',' + size;
         console.log( sql );
 
         connection.query(sql, (err, rows)=>{
@@ -45,7 +43,7 @@ module.exports = {
 
         
       }).catch( err => {
-        reject('error');
+        reject( err );
         //console.log( err );
       });
     } );
@@ -56,13 +54,19 @@ module.exports = {
   getNum(value,key){
     return new Promise( (resolve, reject ) => {
       db.getConnection().then( connection => {
-        connection.query( 'select count(id) as num from comment where status = 1' , (err,rows)=>{
+        var sql = 'select count(id) as num from comment where status = 1';
+        if( key ){
+          sql += ' and '+key+'='+connection.escape(value);
+        }
+        connection.query(  sql, (err,rows)=>{
           if( err ) {
             reject(err)
           } else {
             resolve( rows.length? rows[0].num : 0 );
           }
         })
+      }).catch( err=> {
+        reject(err);
       })
     } )
   }

@@ -1,5 +1,5 @@
 var db = require('../db/db.js');
-
+var pageSize = 10;
 /*
 http://www.runoob.com/nodejs/nodejs-mysql.html
 
@@ -15,25 +15,57 @@ connection.query(addSql,addSqlParams,function (err, result) {
 });
 */
 module.exports = {
-  get(){
+  /*
+    获取key字段内容为value的 第page页数据，每页显示size条数据
+  */
+  get(value,key,page,size){
     return new Promise( ( resolve , reject )=>{
       db.getConnection().then( connection => {
-        //console.log( connection );
-        connection.query('select * from article where id='+connection.escape('2'), (err, rows)=>{
+        var sql = 'select * from article where status=1';
+        size = size || pageSize; 
+        page = page||1;
+        if( key ) {
+          sql += ' and ' + key+'='+connection.escape(value);
+        }
+        sql += ' order by id desc';
+        sql += ' limit '+ (page-1) * size + ',' + size;
+        console.log( sql );
+
+        connection.query(sql, (err, rows)=>{
           if( err ){
-            console.log( err );
+            //console.log( err );
             reject(err);
           } else {
-            resolve('success'+rows[0].content);
-            //console.log( rows[0] );
+            resolve(rows);
+            //console.log( rows );
           }
         });
-
-        
       }).catch( err => {
-        reject('error');
+        reject( err );
         //console.log( err );
       });
     } );
+  },
+  /*
+    获取key字段内容为value的评论总条数
+  */
+  getNum(value,key){
+    return new Promise( (resolve, reject ) => {
+      db.getConnection().then( connection => {
+        var sql = 'select count(id) as num from article where status = 1';
+        if( key ){
+          sql += ' and '+key+'='+connection.escape(value);
+        }
+        connection.query(  sql, (err,rows)=>{
+          if( err ) {
+            reject(err)
+          } else {
+            resolve( rows.length? rows[0].num : 0 );
+          }
+        })
+      }).catch(err=>{
+        reject( err );
+      })
+    } )
   }
 };
