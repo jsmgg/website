@@ -1,1 +1,0 @@
-{"version":3,"sources":["<input css 1>"],"names":[],"mappings":"AAAA;EACE,YAAY;CACb;;AAED;EACE,aAAa;EACb,cAAc;CACf","file":"to.css","sourcesContent":["div {\n  width: 100%;\n}\n\ndiv p {\n  width: 100px;\n  height: 200px;\n}\n"]}
