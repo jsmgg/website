@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title=title
+    meta(name="description",content="")
+    meta(name="keywords",content="")
+    link(rel="shortcut icon",href="/favicon.ico")
+    link(rel='stylesheet', href='/css/style.css')
+    script(src='/libs/jquery.min.js',type='text/javascript')
+    script(src='/libs/jsmart.js',type='text/javascript')
+    block head
+  body
+    div.page-header
+      block header
+        include common/header.jade
+    div.page-body
+      block content
+    div.page-footer
+      block footer
+        include common/footer.jade
