@@ -4,6 +4,10 @@ var router = express.Router();
 var articleModel = require('./model/article');
 var commentModel = require('./model/comment');
 
+var tools = require('./util/tools.js');
+
+
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   articleModel.get().then(articles=>{
@@ -19,7 +23,7 @@ router.get('/', function(req, res, next) {
   			})
 		    res.render('article',{
 		      msg :msg,
-          useragent:res.useragent
+          isWap:tools.isWap(req.useragent)
 		    });
   		}).catch(err=>{
         next(err);
