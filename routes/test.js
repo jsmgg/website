@@ -7,6 +7,8 @@ var commentModel = require('./model/comment');
 var tools = require('./util/tools.js');
 var config = require('../config');
 
+var md5=require("md5");  
+const ADMIN_KEY = md5(JSON.stringify(config.admin));
 
 
 /*
@@ -23,7 +25,8 @@ res.cookie('name', 'koby', { domain: '.example.com', path: '/admin', secure: tru
 */
 router.get('/', function(req, res, next) {
   console.log(req);
-  if(req.cookies.loginUser){
+  console.log(ADMIN_KEY);
+  if(req.cookies.loginUser===ADMIN_KEY){
     res.render('test',{
       articles :'',
       isWap:tools.isWap(req.useragent)
@@ -66,13 +69,18 @@ router.get('/', function(req, res, next) {
 
 });
 
-
+/*
+  登录
+*/
 router.post('/', function(req, res, next) {
   //res.query get参数
   //res.body post参数
   console.log([req.body]);
   if( req.body.userName == config.admin.userName && req.body.passWord == config.admin.passWord ) {
     console.log( '管理员登录成功' );
+    res.cookie('loginUser', ADMIN_KEY,{
+      maxAge:24*3600
+    });
     res.redirect('/test');
   } else {
     res.render('test',{

@@ -9,6 +9,6 @@ module.exports={
   },
   admin:{
     userName:'admin',
-    password:'123456'
+    passWord:'123456'
   }
 }
