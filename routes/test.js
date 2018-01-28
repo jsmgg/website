@@ -3,6 +3,7 @@ var router = express.Router();
 
 var articleModel = require('./model/article');
 var commentModel = require('./model/comment');
+var catModel = require('./model/cat');
 
 var tools = require('./util/tools.js');
 var config = require('../config');
@@ -24,50 +25,65 @@ signed:使用签名，类型Boolean，默认为false。`express会使用req.secr
 res.cookie('name', 'koby', { domain: '.example.com', path: '/admin', secure: true });
 */
 router.get('/', function(req, res, next) {
-  console.log(req);
+  //console.log(req);
   console.log(ADMIN_KEY);
   if(req.cookies.loginUser===ADMIN_KEY){
-    res.render('test',{
-      articles :'',
-      isWap:tools.isWap(req.useragent)
-    });
+    catModel.get().then(rows=>{
+      res.render('test',{
+        cats:rows,
+        isWap:tools.isWap(req.useragent)
+      });
+    }).catch(err=>{
+      next( err );
+    })
+
   } else {
     res.render('test',{
       loginView: 1,
       isWap:tools.isWap(req.useragent)
     });
   }
-
-
-/*  articleModel.get().then(articles=>{
-  	var msg = '';
-    articles.forEach(item=>{
-      msg+='<br/>'+item.title;
-    })
-  	commentModel.getNum('2','aid').then(num=>{
-  		msg+='<br/>'+num;
-  		commentModel.get(2,'aid',2,2).then(rows=>{
-  			rows.forEach(( item )=>{
-  		    msg+='<br/>'+item.id;
-  			})
-		    res.render('article',{
-		      msg :msg,
-          isWap:tools.isWap(req.useragent)
-		    });
-  		}).catch(err=>{
-        next(err);
-      });
-
-
-  	}).catch(err=>{
-  		next( err )
-  	})
-
-  }).catch(err=>{
-    next(err)
-  })*/
-
 });
+
+router.post('/edit',function( req, res, next ) {
+  let {title,cid,img,content,id} = req.body;
+  let errorMsg = '';
+  if( !title || title.length == 0 ){
+    errorMsg = '文章标题不能为空！';
+  } else if( !img || img.length == 0 ) {
+    errorMsg = '封面图不能为空！';
+  } else if( !content || content.length == 0 ) {
+    errorMsg = '文章内容不能为空！';
+  }
+  if( errorMsg ){
+    res.end(JSON.stringify({
+      code:201,
+      msg:errorMsg
+    }));
+    return;
+  }
+  if( id ) {
+    //articleModel.add({title,cid,img,content})
+  } else {
+    articleModel.add({title,cid,img,content}).then(dt=>{
+      if( dt.code == 200 ){
+        res.end(JSON.stringify({
+          code :  200,
+          id:dt.id,
+          msg:'成功'
+        }));
+      } else {
+        res.end(JSON.stringify({
+          code:202,
+          desc : JSON.stringify(dt),
+          msg:'文章添加失败!'
+        }))
+      }
+    })
+  }
+  
+
+})
 
 /*
   登录
@@ -79,7 +95,7 @@ router.post('/', function(req, res, next) {
   if( req.body.userName == config.admin.userName && req.body.passWord == config.admin.passWord ) {
     console.log( '管理员登录成功' );
     res.cookie('loginUser', ADMIN_KEY,{
-      maxAge:24*3600
+      maxAge:15*24*3600
     });
     res.redirect('/test');
   } else {

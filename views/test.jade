@@ -12,6 +12,27 @@ block content
         input(name="passWord" type="password" maxlength="32")
         input(name="submitBtn" type="button" value="登录" js_handle="js_submit")
   -else
-    div.articleList 文章列表
+    div.articleEdit
+      h2 文章编辑
+      p 所属分类：
+        select(name="cid")
+          each item,index in cats
+            option(value="#{item.id}") #{item.name}
+      p 文章标题：
+        input(name="title" maxlength="200")
+      p 文章封面图：
+        input(name="img" maxlength="200")
+      p 文章内容：
+        textarea(name="content")
+      p
+        input(value="提交" type="button" js_handle="js_add")
+    div.catEdit
+      h2 分类编辑
+      ul
+        each item,index in cats
+          li(data-id="#{item.id}")
+            span #{item.name}
+            a(href="javascript:void(0);" data-hook="js_edit_cat") 编辑
+
   script(src='/js/test.js',type='text/javascript')
 

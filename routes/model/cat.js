@@ -1,5 +1,5 @@
 var db = require('../db/db.js');
-var pageSize = 10;
+var pageSize = 20;
 /*
 http://www.runoob.com/nodejs/nodejs-mysql.html
 
@@ -21,13 +21,13 @@ module.exports = {
   get(value,key,page,size){
     return new Promise( ( resolve , reject )=>{
       db.getConnection().then( connection => {
-        var sql = 'select * from article where status=1';
+        var sql = 'select * from cat where status=1';
         size = size || pageSize; 
         page = page||1;
         if( key ) {
           sql += ' and ' + key+'='+connection.escape(value);
         }
-        sql += ' order by id desc';
+        sql += ' order by id asc';
         sql += ' limit '+ (page-1) * size + ',' + size;
         console.log( sql );
 
@@ -48,12 +48,12 @@ module.exports = {
     } );
   },
   /*
-    获取key字段内容为value的评论总条数
+    获取key字段内容为value的总条数
   */
   getNum(value,key){
     return new Promise( (resolve, reject ) => {
       db.getConnection().then( connection => {
-        var sql = 'select count(id) as num from article where status = 1';
+        var sql = 'select count(id) as num from cat where status = 1';
         if( key ){
           sql += ' and '+key+'='+connection.escape(value);
         }
@@ -69,57 +69,5 @@ module.exports = {
         reject( err );
       })
     } )
-  },
-  add(obj){
-    return new Promise( (resolve, reject) => {
-      db.getConnection().then( connection => {
-        let sql = 'insert into article(title,content,img,star,renum,status,cid) VALUES(?,?,?,0,0,1,?)';
-        let {title,content,img,cid} = obj; 
-        let params = [title,content,img,cid];//[connection.escape(title), connection.escape(content),connection.escape(img),connection.escape(cid)];
-        connection.query(sql,params,(err,result)=>{
-          connection.end();
-          if( err ){
-            reject( err );
-          } else {
-            //console.log(result);
-            resolve({
-              code:200,
-              id:result.insertId
-            });
-          }
-        });
-      }).catch(err=>{
-        reject( err );
-      });
-    });
   }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
