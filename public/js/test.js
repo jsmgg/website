@@ -53,7 +53,25 @@ let self = {
       alert(res.msg);
       self.js_add.busy = false;
     },{cid,title,content,img});
+  },
+  js_remove(obj){
+    var id = obj.attr('data-id');
+    if(this.js_remove.busy) return;
+    this.js_remove.busy = true;
+    this.ajax('/test/remove',function( res ){
+      self.js_remove.busy = false;
+      if( res.code == 200 ){
+        if( res.num>0 ){
+          obj.parent().remove();
+        } else {
+          alert( 'id错误' );
+        }
+      }else {
+        alert( res.msg || '删除失败!');
+      }
+    },{id})
   }
+
 }
 self.init();
 })($);

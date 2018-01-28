@@ -12,6 +12,14 @@ block content
         input(name="passWord" type="password" maxlength="32")
         input(name="submitBtn" type="button" value="登录" js_handle="js_submit")
   -else
+    div.articleList
+      h2 文章列表
+      ul
+        each item,index in articles
+          li
+            span=item.title
+            a(href="javascript:void(0);" js_handle="js_remove" data-id="#{item.id}")删除
+
     div.articleEdit
       h2 文章编辑
       p 所属分类：

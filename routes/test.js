@@ -28,11 +28,17 @@ router.get('/', function(req, res, next) {
   //console.log(req);
   console.log(ADMIN_KEY);
   if(req.cookies.loginUser===ADMIN_KEY){
-    catModel.get().then(rows=>{
-      res.render('test',{
-        cats:rows,
-        isWap:tools.isWap(req.useragent)
+    catModel.get().then(cats=>{
+      articleModel.get().then(articles=>{
+        res.render('test',{
+          articles:articles,
+          cats:cats,
+          isWap:tools.isWap(req.useragent)
+        });
+      }).catch(err=>{
+        next( err );
       });
+
     }).catch(err=>{
       next( err );
     })
@@ -62,6 +68,13 @@ router.post('/edit',function( req, res, next ) {
     }));
     return;
   }
+  if(req.cookies.loginUser!==ADMIN_KEY){
+    res.end(JSON.stringify({
+      code:500,
+      msg:'未登录'
+    }));
+    return;
+  }
   if( id ) {
     //articleModel.add({title,cid,img,content})
   } else {
@@ -81,8 +94,36 @@ router.post('/edit',function( req, res, next ) {
       }
     })
   }
-  
+})
 
+router.post('/remove',function( req, res, next ) {
+  let id = req.body.id;
+  if(req.cookies.loginUser!==ADMIN_KEY){
+    res.end(JSON.stringify({
+      code:500,
+      msg:'未登录'
+    }));
+    return;
+  }
+  articleModel.remove(id,'id').then(dt=>{
+    if( dt.code == 200 ){
+      res.end(JSON.stringify({
+        code:200,
+        num:dt.num
+      }))
+    } else {
+      res.end(JSON.stringify({
+        code:201,
+        msg:'删除失败'
+      }));
+    }
+  }).catch(err=>{
+    res.end(JSON.stringify({
+      code:-500,
+      desc:JSON.stringify( err ),
+      msg : '删除失败!'
+    }))
+  })
 })
 
 /*

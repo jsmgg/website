@@ -1,5 +1,5 @@
 var db = require('../db/db.js');
-var pageSize = 10;
+var pageSize = 20;
 /*
 http://www.runoob.com/nodejs/nodejs-mysql.html
 
@@ -92,6 +92,27 @@ module.exports = {
         reject( err );
       });
     });
+  },
+  remove(value,key){
+    return new Promise((resolve, reject)=>{
+      db.getConnection().then( connection=>{
+        let sql = 'update article set status = 0 WHERE '+key+' = ?';
+        let params = [value];
+        connection.query(sql,params,(err,result)=>{
+          connection.end();
+          if( err ){
+            reject( err );
+          } else {
+            resolve({
+              code:200,
+              num:result.affectedRows
+            });
+          }
+        })
+      }).catch(err=>{
+        reject( err );
+      })
+    })
   }
 };
 
