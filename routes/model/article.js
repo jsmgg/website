@@ -32,7 +32,7 @@ module.exports = {
         console.log( sql );
 
         connection.query(sql, (err, rows)=>{
-          connection.end();
+          connection.release();
           if( err ){
             //console.log( err );
             reject(err);
@@ -58,7 +58,7 @@ module.exports = {
           sql += ' and '+key+'='+connection.escape(value);
         }
         connection.query(  sql, (err,rows)=>{
-          connection.end();
+          connection.release();
           if( err ) {
             reject(err)
           } else {
@@ -77,7 +77,7 @@ module.exports = {
         let {title,content,img,cid} = obj; 
         let params = [title,content,img,cid];//[connection.escape(title), connection.escape(content),connection.escape(img),connection.escape(cid)];
         connection.query(sql,params,(err,result)=>{
-          connection.end();
+          clearDB && connection.release();
           if( err ){
             reject( err );
           } else {
@@ -99,7 +99,7 @@ module.exports = {
         let sql = 'update article set status = 0 WHERE '+key+' = ?';
         let params = [value];
         connection.query(sql,params,(err,result)=>{
-          connection.end();
+          connection.release();
           if( err ){
             reject( err );
           } else {

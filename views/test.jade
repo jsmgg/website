@@ -18,7 +18,7 @@ block content
         each item,index in articles
           li
             span=item.title
-            a(href="javascript:void(0);" js_handle="js_remove" data-id="#{item.id}")删除
+            a(href="javascript:void(0);" js_handle="js_remove" data-id="#{item.id}")=删除
 
     div.articleEdit
       h2 文章编辑
@@ -40,7 +40,8 @@ block content
         each item,index in cats
           li(data-id="#{item.id}")
             span #{item.name}
-            a(href="javascript:void(0);" data-hook="js_edit_cat") 编辑
+            input(type="text" value="#{item.name}")
+            a(href="javascript:void(0);" js_handle="js_edit_cat") 修改
 
   script(src='/js/test.js',type='text/javascript')
 

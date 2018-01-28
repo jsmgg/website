@@ -5,7 +5,8 @@
 生成的dist目录安装插件报错记得使用 sudo权限
 
 
-查看数据库连接数：mysqladmin -uroot -p123456 processlist
+查看数据库连接数：
+mysqladmin -uroot -p123456 processlist
 
 
 默认端口：

@@ -96,7 +96,7 @@ router.post('/edit',function( req, res, next ) {
   }
 })
 
-router.post('/remove',function( req, res, next ) {
+router.post('/articleRemove',function( req, res, next ) {
   let id = req.body.id;
   if(req.cookies.loginUser!==ADMIN_KEY){
     res.end(JSON.stringify({
@@ -122,6 +122,37 @@ router.post('/remove',function( req, res, next ) {
       code:-500,
       desc:JSON.stringify( err ),
       msg : '删除失败!'
+    }))
+  })
+})
+
+router.post('/catUpdate',(req,res,next)=>{
+  let {id,name} = req.body;
+  if(req.cookies.loginUser!==ADMIN_KEY){
+    res.end(JSON.stringify({
+      code:500,
+      msg:'未登录'
+    }));
+    return;
+  }
+  catModel.updateName(id,name).then( dt=> {
+    if( dt.code == 200 ){
+      res.end(JSON.stringify({
+        code:200,
+        msg:'修改成功',
+        num:dt.num
+      }));
+    } else {
+      res.end(JSON.stringify({
+        code:500,
+        msg:'修改失败'
+      }));
+    }
+  }).catch(err=>{
+    res.end(JSON.stringify({
+      code:-500,
+      desc:JSON.stringify( err ),
+      msg : '修改失败!'
     }))
   })
 })

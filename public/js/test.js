@@ -58,7 +58,7 @@ let self = {
     var id = obj.attr('data-id');
     if(this.js_remove.busy) return;
     this.js_remove.busy = true;
-    this.ajax('/test/remove',function( res ){
+    this.ajax('/test/articleRemove',function( res ){
       self.js_remove.busy = false;
       if( res.code == 200 ){
         if( res.num>0 ){
@@ -70,6 +70,21 @@ let self = {
         alert( res.msg || '删除失败!');
       }
     },{id})
+  },
+  js_edit_cat( obj ){
+    let box = obj.parent();
+    let id = box.attr('data-id');
+    let name = $.trim(box.find('input').val());
+    if( name.length == 0 ) return alert( '标题不能为空!' );
+    this.js_edit_cat.busy = true;
+    this.ajax('/test/catUpdate',res=>{
+      self.js_edit_cat.busy = false;
+      if( res.code == 200 ){
+        box.find('span').text( name );
+      } else {
+        alert(res.msg||'修改失败！');
+      }
+    },{id,name})
   }
 
 }

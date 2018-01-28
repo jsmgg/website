@@ -32,7 +32,7 @@ module.exports = {
         console.log( sql );
 
         connection.query(sql, (err, rows)=>{
-          connection.end();
+          connection.release();
           if( err ){
             console.log( err );
             reject(err);
@@ -60,7 +60,7 @@ module.exports = {
           sql += ' and '+key+'='+connection.escape(value);
         }
         connection.query(  sql, (err,rows)=>{
-          connection.end();
+          connection.release();
           if( err ) {
             reject(err)
           } else {

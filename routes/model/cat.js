@@ -32,7 +32,7 @@ module.exports = {
         console.log( sql );
 
         connection.query(sql, (err, rows)=>{
-          connection.end();
+          connection.release();
           if( err ){
             //console.log( err );
             reject(err);
@@ -58,7 +58,7 @@ module.exports = {
           sql += ' and '+key+'='+connection.escape(value);
         }
         connection.query(  sql, (err,rows)=>{
-          connection.end();
+          connection.release();
           if( err ) {
             reject(err)
           } else {
@@ -69,5 +69,24 @@ module.exports = {
         reject( err );
       })
     } )
+  },
+  updateName( id , name ){
+    return new Promise( (resolve, reject)=>{
+      db.getConnection().then( connection => {
+        var sql = 'update cat set name = ? WHERE id = ?';
+        var params = [name,id];
+        connection.query(sql, params, (err,result)=>{
+          connection.release();
+          if( err ){
+            reject( err );
+          } else {
+            resolve( {
+              code:200,
+              num : result.affectedRows
+            } )
+          }
+        })
+      })
+    });
   }
 };
